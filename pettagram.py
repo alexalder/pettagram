@@ -11,16 +11,7 @@ base_url: str
 # Returns the sent message as JSON
 def send(chat_id, msg=None, photo_id=None, reply=None, keyboard=json.dumps({'inline_keyboard': [[]]}), parse_mode=None, disable_preview='true'):
     try:
-        if msg:
-            resp = urllib.request.urlopen(base_url + 'sendMessage', urllib.parse.urlencode({
-                    'chat_id': str(chat_id),
-                    'text': msg.encode('utf-8'),
-                    'parse_mode': parse_mode,
-                    'disable_web_page_preview': disable_preview,
-                    'reply_to_message_id': reply,
-                    'reply_markup': keyboard,
-                }).encode('utf-8')).read()
-        elif photo_id:
+        if photo_id:
             resp = urllib.request.urlopen(base_url + 'sendPhoto', urllib.parse.urlencode({
                 'chat_id': str(chat_id),
                 'photo': photo_id,
@@ -29,6 +20,15 @@ def send(chat_id, msg=None, photo_id=None, reply=None, keyboard=json.dumps({'inl
                 'reply_to_message_id': str(reply),
                 'reply_markup': keyboard,
             }).encode('utf-8')).read()
+        elif msg:
+            resp = urllib.request.urlopen(base_url + 'sendMessage', urllib.parse.urlencode({
+                    'chat_id': str(chat_id),
+                    'text': msg.encode('utf-8'),
+                    'parse_mode': parse_mode,
+                    'disable_web_page_preview': disable_preview,
+                    'reply_to_message_id': reply,
+                    'reply_markup': keyboard,
+                }).encode('utf-8')).read()
         else:
             print("No message to send")
             resp = make_response("No message to send")
