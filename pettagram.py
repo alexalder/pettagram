@@ -55,7 +55,7 @@ class Bot:
             elif video:
                 url = self.base_url + 'sendVideo'
                 files = {'video': open(video, 'rb')}
-            data = {'chat_id': chat_id}
+            data = {'chat_id': chat_id, 'reply_to_message_id': reply}
             resp = requests.post(url, files=files, data=data).json()
             print('Sent file:')
             print(resp)
