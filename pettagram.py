@@ -19,7 +19,7 @@ class Bot:
                 resp = urllib.request.urlopen(self.base_url + 'sendPhoto', urllib.parse.urlencode({
                     'chat_id': str(chat_id),
                     'photo': photo_id,
-                    'caption': msg.encode('utf-8'),
+                    'caption': None if msg is None else msg.encode('utf-8'),
                     'parse_mode': 'Markdown',
                     'reply_to_message_id': str(reply),
                     'reply_markup': keyboard,
