@@ -21,7 +21,7 @@ class Bot:
                         'photo': photo_id,
                         'caption': None if msg is None else msg.encode('utf-8'),
                         'parse_mode': parse_mode,
-                        'reply_to_message_id': int(reply),
+                        'reply_to_message_id': None if reply is None else int(reply),
                         'reply_markup': keyboard,
                     })
             elif msg:
@@ -32,7 +32,7 @@ class Bot:
                         'text': msg.encode('utf-8'),
                         'parse_mode': parse_mode,
                         'disable_web_page_preview': disable_preview,
-                        'reply_to_message_id': int(reply),
+                        'reply_to_message_id': None if reply is None else int(reply),
                         'reply_markup': keyboard,
                     })
             else:
