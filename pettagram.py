@@ -23,7 +23,7 @@ class Bot:
                         'parse_mode': parse_mode,
                         'reply_to_message_id': None if reply is None else int(reply),
                         'reply_markup': keyboard,
-                    })
+                    }).content
             elif msg:
                 resp = requests.get(
                     self.base_url + 'sendMessage',
@@ -34,7 +34,7 @@ class Bot:
                         'disable_web_page_preview': disable_preview,
                         'reply_to_message_id': None if reply is None else int(reply),
                         'reply_markup': keyboard,
-                    })
+                    }).content
             else:
                 print("No message to send")
                 resp = make_response("No message to send")
