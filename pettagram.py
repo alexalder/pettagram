@@ -7,8 +7,6 @@ from flask import make_response
 
 
 class Bot:
-    base_url: str
-
     def __init__(self, base_url):
         self.base_url = base_url
 
@@ -16,23 +14,27 @@ class Bot:
     def send(self, chat_id, msg=None, photo_id=None, reply=None, keyboard=json.dumps({'inline_keyboard': [[]]}), parse_mode=None, disable_preview='true'):
         try:
             if photo_id:
-                resp = urllib.request.urlopen(self.base_url + 'sendPhoto', urllib.parse.urlencode({
-                    'chat_id': str(chat_id),
-                    'photo': photo_id,
-                    'caption': None if msg is None else msg.encode('utf-8'),
-                    'parse_mode': 'Markdown',
-                    'reply_to_message_id': str(reply),
-                    'reply_markup': keyboard,
-                }).encode('utf-8')).read()
+                resp = requests.get(
+                    self.base_url + 'sendPhoto',
+                    params={
+                        'chat_id': chat_id,
+                        'photo': photo_id,
+                        'caption': None if msg is None else msg.encode('utf-8'),
+                        'parse_mode': parse_mode,
+                        'reply_to_message_id': int(reply),
+                        'reply_markup': keyboard,
+                    })
             elif msg:
-                resp = urllib.request.urlopen(self.base_url + 'sendMessage', urllib.parse.urlencode({
-                    'chat_id': str(chat_id),
-                    'text': msg.encode('utf-8'),
-                    'parse_mode': parse_mode,
-                    'disable_web_page_preview': disable_preview,
-                    'reply_to_message_id': reply,
-                    'reply_markup': keyboard,
-                }).encode('utf-8')).read()
+                resp = requests.get(
+                    self.base_url + 'sendMessage',
+                    params={
+                        'chat_id': chat_id,
+                        'text': msg.encode('utf-8'),
+                        'parse_mode': parse_mode,
+                        'disable_web_page_preview': disable_preview,
+                        'reply_to_message_id': int(reply),
+                        'reply_markup': keyboard,
+                    })
             else:
                 print("No message to send")
                 resp = make_response("No message to send")
