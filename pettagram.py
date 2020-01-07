@@ -145,3 +145,25 @@ class Bot:
             }).encode("utf-8")).read()
         answer = json.loads(query).get("result")
         return answer.get('file_path')
+
+    def answer_inline_query(self, query, results):
+        try:
+            query_id = query["id"]
+
+            resp = requests.get(
+                self.base_url + 'answerInlineQuery',
+                params={
+                    'inline_query_id': query_id,
+                    'is_personal': True,
+                    'results': results
+                }).content
+        except urllib.error.HTTPError as e:
+            print("Error in send: " + e.read().decode())
+            resp = make_response("Error in send")
+        except Exception:
+            print("Error in send: " + traceback.format_exc())
+            resp = make_response("Error in send")
+
+        print('Answer inline query:')
+        print(resp)
+        return resp
