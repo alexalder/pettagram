@@ -66,13 +66,13 @@ class Bot:
             resp = make_response('Error in send_file')
         return resp
 
-    def edit_message(self, chat_id, message_id, text):
+    def edit_message(self, chat_id, message_id, text, parse_mode=None):
         try:
             resp = urllib.request.urlopen(self.base_url + 'editMessageText', urllib.parse.urlencode({
                     'chat_id': str(chat_id),
                     'message_id': int(message_id),
                     'text': text.encode('utf-8'),
-                    'parse_mode': 'Markdown',
+                    'parse_mode': parse_mode,
                     'disable_web_page_preview': 'true',
                 }).encode('utf-8')).read()
             print(resp)
@@ -104,13 +104,13 @@ class Bot:
             resp = make_response('Error in edit')
         return resp
 
-    def edit_caption(self, chat_id, message_id, caption, keyboard=json.dumps({'inline_keyboard': [[]]})):
+    def edit_caption(self, chat_id, message_id, caption, parse_mode=None, keyboard=json.dumps({'inline_keyboard': [[]]})):
         try:
             resp = urllib.request.urlopen(self.base_url + 'editMessageCaption', urllib.parse.urlencode({
                     'chat_id': str(chat_id),
                     'message_id': int(message_id),
                     'caption': caption,
-                    'parse_mode': 'Markdown',
+                    'parse_mode': parse_mode,
                     'reply_markup': keyboard,
                 }).encode('utf-8')).read()
             print(resp)
