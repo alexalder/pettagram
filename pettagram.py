@@ -76,8 +76,12 @@ class Bot:
                     'disable_web_page_preview': 'true',
                 }).encode('utf-8')).read()
             print(resp)
+        except urllib.error.HTTPError as e:
+            print("Error in update: " + e.read().decode())
+            resp = make_response("Error in send")
         except Exception:
-            resp = make_response('Error in edit')
+            print("Error in update: " + traceback.format_exc())
+            resp = make_response("Error in send")
         return resp
 
     def delete_message(self, chat_id, message_id):
