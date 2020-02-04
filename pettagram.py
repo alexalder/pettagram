@@ -159,6 +159,21 @@ class Bot:
         answer = json.loads(query).get("result")
         return answer.get('file_path')
 
+    def kick(self, chat_id, user_id):
+        try:
+            resp = urllib.request.urlopen(self.base_url + 'kickChatMember', urllib.parse.urlencode({
+                'chat_id': str(chat_id),
+                'user_id': int(user_id),
+                }).encode('utf-8')).read()
+            resp = urllib.request.urlopen(self.base_url + 'unbanChatMember', urllib.parse.urlencode({
+                'chat_id': str(chat_id),
+                'user_id': int(user_id),
+                }).encode('utf-8')).read()
+        except Exception:
+            resp = make_response('Error in kick')
+        finally:
+            return resp
+
     def answer_inline_query(self, query, results):
         try:
             query_id = query["id"]
