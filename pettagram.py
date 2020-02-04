@@ -11,7 +11,7 @@ class Bot:
         self.base_url = base_url
 
     # Returns the sent message as JSON
-    def send(self, chat_id, msg=None, photo_id=None, reply=None, keyboard=json.dumps({'inline_keyboard': [[]]}), parse_mode=None, disable_preview='true'):
+    def send(self, chat_id, msg=None, photo_id=None, sticker_id=None, reply=None, keyboard=json.dumps({'inline_keyboard': [[]]}), parse_mode=None, disable_preview='true'):
         try:
             if photo_id:
                 resp = requests.get(
@@ -32,6 +32,15 @@ class Bot:
                         'text': msg.encode('utf-8'),
                         'parse_mode': parse_mode,
                         'disable_web_page_preview': disable_preview,
+                        'reply_to_message_id': None if reply is None else int(reply),
+                        'reply_markup': keyboard,
+                    }).content
+            elif sticker_id:
+                resp = requests.get(
+                    self.base_url + 'sendSticker',
+                    params={
+                        'chat_id': chat_id,
+                        'sticker': sticker_id,
                         'reply_to_message_id': None if reply is None else int(reply),
                         'reply_markup': keyboard,
                     }).content
