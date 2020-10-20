@@ -58,6 +58,30 @@ class Bot:
             resp = make_response("Error in send")
         return resp
 
+    def send_url(self, chat_id, document=None, caption = None):
+        try:
+            if document:
+                resp = requests.get(
+                    self.base_url + 'sendDocument',
+                    params={
+                        'chat_id': chat_id,
+                        'document': document,
+                        'caption' : caption
+                    }).content
+            else:
+                print("No message to send")
+                resp = make_response("No message to send")
+                return resp
+            print('Sent message:')
+            print(resp)
+        except urllib.error.HTTPError as e:
+            print("Error in send: " + e.read().decode())
+            resp = make_response("Error in send")
+        except Exception:
+            print("Error in send: " + traceback.format_exc())
+            resp = make_response("Error in send")
+        return resp
+
     def send_file(self, chat_id, photo=None, video=None, reply=None, keyboard=json.dumps({'inline_keyboard': [[]]})):
         try:
             if photo:
