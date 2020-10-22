@@ -82,7 +82,7 @@ class Bot:
             resp = make_response("Error in send")
         return resp
 
-    def send_file(self, chat_id, photo=None, video=None, reply=None, keyboard=json.dumps({'inline_keyboard': [[]]})):
+    def send_file(self, chat_id, photo=None, video=None, document=None, reply=None, keyboard=json.dumps({'inline_keyboard': [[]]})):
         try:
             if photo:
                 url = self.base_url + 'sendPhoto'
@@ -90,6 +90,9 @@ class Bot:
             elif video:
                 url = self.base_url + 'sendVideo'
                 files = {'video': open(video, 'rb')}
+            elif document:
+                url = self.base_url + 'sendDocument'
+                files = {'document': open(document, 'rb')}
             data = {'chat_id': chat_id, 'reply_to_message_id': reply}
             resp = requests.post(url, files=files, data=data).json()
             print('Sent file:')
