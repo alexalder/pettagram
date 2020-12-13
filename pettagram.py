@@ -196,7 +196,12 @@ class Bot:
                 'chat_id': str(chat_id),
                 'user_id': int(user_id),
                 }).encode('utf-8')).read()
+            print("Kicked " + user_id + " from " + chat_id)
+        except urllib.error.HTTPError as e:
+            print("Error in kick: " + e.read().decode())
+            resp = make_response("Error in send")
         except Exception:
+            print("Error in kick: " + traceback.format_exc())
             resp = make_response('Error in kick')
         finally:
             return resp
